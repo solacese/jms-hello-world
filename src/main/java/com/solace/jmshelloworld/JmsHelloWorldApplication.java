@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.config.JmsListenerContainerFactory;
+import org.springframework.util.ErrorHandler;
+
 
 @SpringBootApplication
 @EnableJms
@@ -16,7 +18,8 @@ public class JmsHelloWorldApplication {
 
     @Bean
     public JmsListenerContainerFactory<?> myFactory(ConnectionFactory connectionFactory,
-	    DefaultJmsListenerContainerFactoryConfigurer configurer) {
+	    DefaultJmsListenerContainerFactoryConfigurer configurer, 
+	    ErrorHandler errorHandler) {
 	DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
 	// This provides all boot's default to this factory, including the message
 	// converter
@@ -24,6 +27,7 @@ public class JmsHelloWorldApplication {
 	
 	//want to listen on topics
 	factory.setPubSubDomain(true);
+    factory.setErrorHandler(errorHandler);
 	
 	// You could still override some of Boot's default if necessary.
 	return factory;
